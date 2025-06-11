@@ -1,0 +1,55 @@
+gates
+code:
+module gates(
+  input a, b,
+  output ando,
+  output oro,
+  output noto,
+  output nando,
+  output noro,
+  output xoro,
+  output xnoro
+);
+
+  assign ando  = a & b;
+  assign oro   = a | b;
+  assign noto= ~a;
+  assign nando= ~(a & b);
+  assign noro = ~(a | b);
+  assign xoro = a ^ b;
+  assign xnoro= ~(a ^ b);
+
+endmodule
+
+tb:
+`timescale 1ns/1ps
+
+module tbgates;
+
+  reg a, b;
+  wire ando, oro, noto, nando, noro, xoro, xnoro;
+
+  gates uut (
+    .a(a), .b(b),
+    .ando(ando),
+    .oro(oro),
+    .noto(noto),
+    .nando(nando),
+    .noro(noro),
+    .xoro(xoro),
+    .xnoro(xnoro)
+  );
+
+  initial begin
+    $dumpfile("gates.vcd");
+    $dumpvars(0, tbgates);
+
+    a = 0; b = 0; #10;
+    a = 0; b = 1; #10;
+    a = 1; b = 0; #10;
+    a = 1; b = 1; #10;
+
+    $finish;
+  end
+endmodule
+

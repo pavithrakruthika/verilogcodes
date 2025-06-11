@@ -1,0 +1,31 @@
+dataflow :
+code:
+
+module dataflow(output y, input a, b);
+
+  assign y = a & b;
+
+endmodule
+
+
+tb:
+
+`timescale 1ns/1ps
+
+module tbdataflow;
+  reg a, b;
+  wire y;
+
+  dataflow uut (y, a, b);
+
+  initial begin
+    $dumpfile("dataflow.vcd");
+    $dumpvars(0, tbdataflow);
+    a = 0; b = 0; #10;
+    a = 0; b = 1; #10;
+    a = 1; b = 0; #10;
+    a = 1; b = 1; #10;
+
+    $finish;
+  end
+endmodule

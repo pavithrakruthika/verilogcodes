@@ -1,0 +1,46 @@
+data types
+
+code:
+
+module datatype_demo;
+  wire w1, w2, w;
+  reg r1;
+  integer a;
+  real b; 
+  time c; 
+  assign w= w1 & w2;
+
+  initial begin
+    r1 = 1;
+    a = 42;  
+    b = 3.1415;
+    c = $time;   
+    $display("wire: %b", w);
+    $display("Register: %b", r1);
+    $display("Integer: %d", a);
+    $display("Real: %f", b);
+    $display("Time: %t", c);
+  end
+endmodule
+
+
+test bench:
+`timescale 1ns/1ps
+
+module tb_datatype_demo;
+  reg w1, w2;
+
+  datatype_demo uut();
+
+  initial begin
+    $dumpfile("datatype_demo.vcd");
+    $dumpvars(0, tb_datatype_demo);
+
+    w1 = 1;
+    w2 = 1;
+
+    #10;
+
+    $finish;
+  end
+endmodule

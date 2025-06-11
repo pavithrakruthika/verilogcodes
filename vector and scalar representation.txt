@@ -1,0 +1,37 @@
+vector and scalar representation 
+code:
+module vecscal;  
+  reg sa;
+  reg sb;
+  reg sout;
+  reg [3:0] va;
+  reg [3:0] vb;
+  reg [3:0] vout;
+  initial begin  
+    sa = 1'b1;
+    sb = 1'b0;
+    sout = sa & sb;
+    va = 4'b1110;
+    vb = 4'b1111;
+    vout = va & vb;
+  end
+endmodule
+
+
+tb:
+`timescale 1ns / 1ps
+
+module tb;
+
+  vecscal uut();
+
+  initial begin
+    
+    $dumpfile("vecscal.vcd");
+    $dumpvars(0, tb);
+
+    #10;
+
+    $finish;
+  end
+endmodule

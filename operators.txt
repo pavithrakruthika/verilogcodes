@@ -1,0 +1,99 @@
+operators 
+code:
+module operators(
+  input  [3:0] a, b,
+  output reg [4:0] sum, diff, product,
+  output reg [3:0] quotient, remainder,
+  output reg eq, neq, gt, lt,
+  output reg and_l, or_l, not_a,
+  output reg [3:0] and_b, or_b, xor_b, not_b,
+  output reg [3:0] shift_left, shift_right,
+  output reg [3:0] reduction_and, reduction_or, reduction_xor,
+  output reg [3:0] ternary_result
+);
+  always @(*) begin
+    sum     = a + b;
+    diff    = a - b;
+    product = a * b;
+    quotient = a / b;
+    remainder = a % b;
+
+    eq  = (a == b);
+    neq = (a != b);
+    gt  = (a > b);
+    lt  = (a < b);
+
+    and_l = (a[0] && b[0]);
+    or_l  = (a[0] || b[0]);
+    not_a = !a[0];
+
+    and_b = a & b;
+    or_b  = a | b;
+    xor_b = a ^ b;
+    not_b = ~b;
+
+    shift_left  = a << 1;
+    shift_right = a >> 1;
+   
+    reduction_and = &a;
+    reduction_or  = |a;
+    reduction_xor = ^a;
+
+    ternary_result = (a > b) ? a : b;
+  end
+endmodule
+
+
+
+
+
+
+
+
+
+
+
+
+
+tb:
+
+`timescale 1ns / 1ps
+
+module tb;
+  reg [3:0] a, b;
+  wire [4:0] sum, diff, product;
+  wire [3:0] quotient, remainder;
+  wire eq, neq, gt, lt;
+  wire and_l, or_l, not_a;
+  wire [3:0] and_b, or_b, xor_b, not_b;
+  wire [3:0] shift_left, shift_right;
+  wire [3:0] reduction_and, reduction_or, reduction_xor;
+  wire [3:0] ternary_result;
+
+  operators uut (
+    .a(a), .b(b),
+    .sum(sum), .diff(diff), .product(product),
+    .quotient(quotient), .remainder(remainder),
+    .eq(eq), .neq(neq), .gt(gt), .lt(lt),
+    .and_l(and_l), .or_l(or_l), .not_a(not_a),
+    .and_b(and_b), .or_b(or_b), .xor_b(xor_b), .not_b(not_b),
+    .shift_left(shift_left), .shift_right(shift_right),
+    .reduction_and(reduction_and), .reduction_or(reduction_or), .reduction_xor(reduction_xor),
+    .ternary_result(ternary_result)
+  );
+
+  initial begin
+    $dumpfile("operators.vcd");
+    $dumpvars(0, tb);
+
+    a = 4'b1010; 
+    b = 4'b0101; 
+    #10;
+    
+    a = 4'b1111; 
+    b = 4'b0001; 
+    #10;
+
+    $finish;
+  end
+endmodule

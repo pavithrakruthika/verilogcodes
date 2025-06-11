@@ -1,0 +1,44 @@
+blocking and nonblocking
+code:
+
+// Code your design here
+module blockingnonblocking (input clk, output reg [3:0] a, b, c,  output reg [3:0] x, y, z  );
+
+  always @(posedge clk) begin
+    a = 1;
+    b = a + 1;
+    c = b + 1;
+  end
+
+  always @(posedge clk) begin
+    x <= 1;
+    y <= x + 1;
+    z <= y + 1;
+  end
+
+endmodule
+ 
+tb:
+// Code your testbench here
+// or browse Examples
+`timescale 1ns/1ps
+
+module tb;
+
+  reg clk;
+  wire [3:0] a, b, c;
+  wire [3:0] x, y, z;
+ 
+  blockingnonblocking uut (.clk(clk),.a(a),.b(b),.c(c),.x(x),.y(y),.z(z));
+  
+  initial begin
+    clk = 0;
+    forever #5 clk = ~clk;  
+  end
+
+  initial begin
+    $dumpfile("blockingnonblocking.vcd");
+    $dumpvars(0, tb);
+    #50 $finish;
+  end
+endmodule

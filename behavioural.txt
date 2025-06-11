@@ -1,0 +1,31 @@
+behavioural :
+code:
+module behavioral(output reg y, input a, b);
+
+  always @ (a or b) begin
+    y = a & b;
+  end
+
+endmodule
+
+tb:
+`timescale 1ns/1ps
+
+module tbbehavioral;
+  reg a, b;
+  wire y;
+
+  behavioral uut (y, a, b);
+
+  initial begin
+    $dumpfile("behavioral.vcd");
+    $dumpvars(0, tbbehavioral);
+
+    a = 0; b = 0; #10;
+    a = 0; b = 1; #10;
+    a = 1; b = 0; #10;
+    a = 1; b = 1; #10;
+
+    $finish;
+  end
+endmodule
