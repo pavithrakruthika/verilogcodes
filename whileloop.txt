@@ -1,0 +1,37 @@
+whileloop:
+code:
+
+module while_loop(output reg [7:0] sum);
+integer i;
+always @(*) begin
+    sum = 0;
+    i = 1;
+    while (i <= 4) begin
+        sum = sum + i;
+        i = i + 1;
+    end
+end
+endmodule
+
+
+tb:
+`timescale 1ns/1ps
+module tb_whileloop;
+
+wire [7:0] sum;
+
+while_loop uut (.sum(sum));
+
+initial begin
+    $dumpfile("while_loop.vcd");
+    $dumpvars(0, tb_whileloop);
+    #10;
+    $display("Sum = %d", sum);
+    $finish;
+end
+
+initial begin
+    $monitor("Time = %0t | sum = %d", $time, sum);
+end
+
+endmodule

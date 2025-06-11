@@ -1,0 +1,39 @@
+repeat loop:
+code:
+
+module repeat_loop(output reg [7:0] sum);
+integer i;
+
+always @(*) begin
+    sum = 0;
+    i = 1;
+    repeat (4) begin
+        sum = sum + i;
+        i = i + 1;
+    end
+end
+
+endmodule
+
+
+tb:
+`timescale 1ns/1ps
+module tb_repeat;
+
+wire [7:0] sum;
+
+repeat_loop uut (.sum(sum));
+
+initial begin
+    $dumpfile("repeat_loop.vcd");
+    $dumpvars(0, tb_repeat);
+    #10;
+    $display("Sum = %d", sum);
+    $finish;
+end
+
+initial begin
+    $monitor("Time = %0t | sum = %d", $time, sum);
+end
+
+endmodule
