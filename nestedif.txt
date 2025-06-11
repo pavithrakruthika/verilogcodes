@@ -1,0 +1,41 @@
+nestedif :
+code:
+module nestedif
+  ( input [3:0] a,input [3:0] b,input [3:0] c,output reg [3:0] max);
+
+always @ (a or b or c) begin
+    if (a > b) begin
+        if (a > c)
+            max = a;
+        else
+            max = c;
+    end else begin
+        if (b > c)
+            max = b;
+        else
+            max = c;
+    end
+end
+
+endmodule
+
+tb:
+`timescale 1ns/1ps
+module tbnestedif;
+reg [3:0] a, b, c;
+wire [3:0] max;
+nestedif uut (.a(a),.b(b),.c(c),.max(max));
+initial begin
+  $dumpfile("nestedif.vcd");
+    $dumpvars(0, tbnestedif);
+
+    a = 4; b = 2; c = 1; #10;
+    a = 1; b = 7; c = 5; #10;
+    a = 3; b = 3; c = 9; #10;
+
+    $finish;
+end
+initial begin
+    $monitor("Time = %0t | a = %d, b = %d, c = %d, max = %d", $time, a, b, c, max);
+end
+endmodule

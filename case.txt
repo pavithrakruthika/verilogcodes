@@ -1,0 +1,39 @@
+case :
+code:
+module casestat(input [1:0] sel,output reg [3:0] out);
+
+always @ (sel) begin
+    case (sel)
+        2'b00: out = 4'b0001;
+        2'b01: out = 4'b0010;
+        2'b10: out = 4'b0100;
+        2'b11: out = 4'b1000;
+        default: out = 4'b0000;
+    endcase
+end
+endmodule
+
+tb:
+`timescale 1ns/1ps
+module tbcase;
+reg [1:0] sel;
+wire [3:0] out;
+casestat uut (.sel(sel),.out(out));
+initial begin
+  $dumpfile("casestat.vcd");
+  $dumpvars(0, tbcase);
+
+    sel = 2'b00; #10;
+    sel = 2'b01; #10;
+    sel = 2'b10; #10;
+    sel = 2'b11; #10;
+    sel = 2'bxx; #10; 
+
+    $finish;
+end
+
+initial begin
+    $monitor("Time = %0t | sel = %b, out = %b", $time, sel, out);
+end
+
+endmodule

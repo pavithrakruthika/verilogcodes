@@ -1,0 +1,36 @@
+casez:
+code:
+module case_z( input [2:0] sel,output reg [3:0] out);
+
+always @ (sel) begin
+    casez (sel)
+        3'b1??: out = 4'b1000;  
+        3'b01?: out = 4'b0100;  
+        3'b001: out = 4'b0010;  
+        default: out = 4'b0001; 
+    endcase
+end
+
+endmodule
+
+tb:
+`timescale 1ns/1ps
+module tb_casez;
+reg [2:0] sel;
+wire [3:0] out;
+case_z uut (.sel(sel),.out(out));
+initial begin
+  $dumpfile("case_z.vcd");
+    $dumpvars(0, tb_casez);
+    sel = 3'b000; #10;  
+    sel = 3'b001; #10;  
+    sel = 3'b010; #10;  
+    sel = 3'b011; #10;  
+    sel = 3'b100; #10;  
+    sel = 3'b111; #10;  
+    $finish;
+end
+initial begin
+    $monitor("Time = %0t | sel = %b, out = %b", $time, sel, out);
+end
+endmodule

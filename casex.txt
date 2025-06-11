@@ -1,0 +1,51 @@
+casex:
+code:
+module case_x(
+    input [2:0] opcode,
+    output reg [7:0] operation
+);
+
+always @ (opcode) begin
+    casex (opcode)
+        3'b1xx: operation = 8'hA1;  
+        3'b01x: operation = 8'hB2;  
+        3'b001: operation = 8'hC3;  
+        default: operation = 8'h00; 
+    endcase
+end
+
+endmodule
+
+tb:
+`timescale 1ns/1ps
+module tb_casex;
+
+reg [2:0] opcode;
+wire [7:0] operation;
+
+case_x uut (
+    .opcode(opcode),
+    .operation(operation)
+);
+
+initial begin
+  $dumpfile("case_x.vcd");
+    $dumpvars(0, tb_casex);
+
+    opcode = 3'b000; #10;
+    opcode = 3'b001; #10;
+    opcode = 3'b010; #10;
+    opcode = 3'b011; #10;
+    opcode = 3'b100; #10;
+    opcode = 3'b101; #10;
+    opcode = 3'b110; #10;
+    opcode = 3'b111; #10;
+
+    $finish;
+end
+
+initial begin
+    $monitor("Time = %0t | opcode = %b, operation = %h", $time, opcode, operation);
+end
+
+endmodule
