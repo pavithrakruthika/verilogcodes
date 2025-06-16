@@ -1,0 +1,33 @@
+1to2 demux:
+code:
+
+module demux_1to2 (input D,input S,output Y0,output Y1 );
+
+  assign Y0 = D & ~S;  
+  assign Y1 = D & S;    
+
+endmodule
+
+
+
+tb:
+
+module tb_demux_1to2;
+  reg D, S;
+  wire Y0, Y1;
+  demux_1to2 uut (.D(D),.S(S),.Y0(Y0),.Y1(Y1));
+  initial begin
+    $dumpfile("demux_1to2.vcd");
+    $dumpvars(0, tb_demux_1to2);
+    D = 0; S = 0; #10;
+    D = 0; S = 1; #10;
+    D = 1; S = 0; #10;
+    D = 1; S = 1; #10;
+    $finish;
+  end
+  initial begin
+    $display("Time\tD\tS\tY0\tY1");
+    $monitor("%g\t%b\t%b\t%b\t%b", $time, D, S, Y0, Y1);
+  end
+
+endmodule
