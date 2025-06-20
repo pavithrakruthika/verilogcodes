@@ -1,0 +1,42 @@
+1to8 demux:
+code:
+module demux_1to8 (input wire din,input wire [2:0] sel, output reg [7:0] dout);
+    always @(*) begin
+        dout = 8'b00000000; 
+        case (sel)
+            3'b000: dout[0] = din;
+            3'b001: dout[1] = din;
+            3'b010: dout[2] = din;
+            3'b011: dout[3] = din;
+            3'b100: dout[4] = din;
+            3'b101: dout[5] = din;
+            3'b110: dout[6] = din;
+            3'b111: dout[7] = din;
+        endcase
+    end
+endmodule
+
+
+tb:
+module tb_demux_1to8;
+    reg din;
+    reg [2:0] sel;
+    wire [7:0] dout;
+    demux_1to8 uut (.din(din),.sel(sel),.dout(dout));
+    initial begin
+        $dumpfile("demux_1to8.vcd");
+        $dumpvars(0, tb_demux_1to8);
+        din = 1'b1;
+        sel = 3'b000; #10;
+        sel = 3'b001; #10;
+        sel = 3'b010; #10;
+        sel = 3'b011; #10;
+        sel = 3'b100; #10;
+        sel = 3'b101; #10;
+        sel = 3'b110; #10;
+        sel = 3'b111; #10;
+        din = 1'b0;
+        sel = 3'b011; #10;
+        $finish;
+    end
+endmodule
